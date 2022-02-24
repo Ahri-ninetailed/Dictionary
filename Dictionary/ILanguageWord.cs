@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Dictionary
 {
     //абстракция таблиц, которые будут хранить слова и переводы слов
-    public abstract class LanguageWord
+    public interface ILanguageWord
     {
         //основной ключ
         public int Id { get; set; }
@@ -16,6 +16,6 @@ namespace Dictionary
         [Required]
         public string Word { get; set; }
         //возможные варианты перевода
-        public List<LanguageWord> OtherWords { get; set; } = new List<LanguageWord>();
+        public List<ILanguageWord> OtherWords { get; set; }
     }
 }
