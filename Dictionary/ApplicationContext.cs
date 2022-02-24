@@ -13,7 +13,8 @@ namespace Dictionary
         public DbSet<EngWord> EngWords => Set<EngWord>();
         public ApplicationContext()
         {
-            Database.EnsureCreated();
+            //Database.EnsureDeleted();
+           // Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
