@@ -26,7 +26,7 @@ namespace Dictionary
                 new List<ICommand>
                 {
                     new FirstCommand(),
-                    new SecondCommand(),
+                    new AddWords(),
                     new ThirdCommand(),
                     new FourthCommand(),
                     new FifthCommand(),
