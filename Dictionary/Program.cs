@@ -25,7 +25,7 @@ namespace Dictionary
             ChooseCommand chooseCommand = new ChooseCommand(
                 new List<ICommand>
                 {
-                    new FirstCommand(),
+                    new ShowWords(),
                     new AddWords(),
                     new ThirdCommand(),
                     new FourthCommand(),
