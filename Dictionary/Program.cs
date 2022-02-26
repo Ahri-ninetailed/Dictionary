@@ -30,7 +30,7 @@ namespace Dictionary
                     new ThirdCommand(),
                     new FourthCommand(),
                     new FifthCommand(),
-                    new SixthCommand(),
+                    new DeleteWords(),
                     new SeventhCommand(),
                     new EigthCommand(),
                     new NinthCommand(),

@@ -17,10 +17,6 @@ namespace Dictionary.Menu
     {
         public void Execute() => Console.WriteLine("FifthCommand");
     }
-    class SixthCommand : ICommand
-    {
-        public void Execute() => Console.WriteLine("SixthCommand");
-    }
     class SeventhCommand : ICommand
     {
         public void Execute() => Console.WriteLine("SeventhCommand");
