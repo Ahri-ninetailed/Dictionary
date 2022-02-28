@@ -64,13 +64,22 @@ namespace Dictionary.Menu
             //В листы будут добавляться слова, которые пользователь хочет внести в словарь
             List<string> rusWords = new List<string>();
             List<string> engWords = new List<string>();
+            //В этот лист будут добавлять все слова из консоли
             List<String> unknownLang = new List<string>();
+            //В этим листы будут добавлять слова для проверки формата, формат строки должен иметь ввид "word,... - перевод,..." или "слово,... - translate,..."
+            List<string> unknownList1 = new List<string>();
+            List<string> unknownList2 = new List<string>();
             //Разделим подстроки на слова или фразы на основе запятой
             if (userInput.Contains(','))
             {
                 for (int i = 0; i < splitOverTire.Length; i++)
                 {
                     unknownLang.AddRange(splitOverTire[i].Split(','));
+                    //добавим в 1 лист набор слов слева от тире, а во 2 лист набор слов справа от тире
+                    if (i == 0)
+                        unknownList1.AddRange(splitOverTire[i].Split(','));
+                    else if (i == 1)
+                        unknownList2.AddRange(splitOverTire[i].Split(','));
                 }    
             }
             else
@@ -78,9 +87,17 @@ namespace Dictionary.Menu
                 for (int i = 0; i < splitOverTire.Length; i++)
                 {
                     unknownLang.Add(splitOverTire[i]);
+                    //добавим в 1 лист набор слов слева от тире, а во 2 лист набор слов справа от тире
+                    if (i == 0)
+                        unknownList1.AddRange(splitOverTire[i].Split(','));
+                    else if (i == 1)
+                        unknownList2.AddRange(splitOverTire[i].Split(','));
                 }
             }
             //Определим слова в подходящие по языку листы
+            //Но сначала узнаем разный ли язык слов из наборов unknownList1 и unknownList2
+            if (IsDifferentLanguages(unknownList1, unknownList2))
+                return;
             for (int i = 0; i < unknownLang.Count; i++)
             {
                 //удалим начальные и конечные пробелы
@@ -114,7 +131,7 @@ namespace Dictionary.Menu
                         newRusWords.Add(new RusWord { Word = rusWords[i] });
                     }
                 }
-                //Определим русские слова из ввода пользователя по определенным листам
+                //Определим английские слова из ввода пользователя по определенным листам
                 for (int i = 0; i < engWords.Count; i++)
                 {
                     //Если слова есть в бд, то они добавляются в лист hasEngWords, если нет, то в лист newRusWords
@@ -184,6 +201,42 @@ namespace Dictionary.Menu
                     }
                 }
                 db.SaveChanges();
+            }
+            bool IsDifferentLanguages(List<string> list1, List<string> list2)
+            {
+                List<bool> list1bool = new List<bool>();
+                List<bool> list2bool = new List<bool>();
+                //Добавим в бул списки true или false в зависимости от языка слов элементов list1 и list2
+                for (int i = 0; i < list1.Count; i++)
+                {
+                    if (IsRussianWord(list1[i]))
+                        list1bool.Add(true);
+                    else if (IsEnglishWord(list1[i]))
+                        list1bool.Add(false);
+                    else throw new Exception("Неизвестный язык или некорректный ввод");
+                }
+                for (int i = 0; i < list2.Count; i++)
+                {
+                    if (IsRussianWord(list2[i]))
+                        list2bool.Add(true);
+                    else if (IsEnglishWord(list2[i]))
+                        list2bool.Add(false);
+                    else throw new Exception("Неизвестный язык или некорректный ввод");
+                }
+                //Если в списках есть разные значения, то язык слов в этих списках разный
+                if (list1bool.Contains(true) && list1bool.Contains(false))
+                {
+                    return true;
+                }
+                else if (list2bool.Contains(true) && list2bool.Contains(false))
+                {
+                    return true;
+                }
+                //Списки не должны быть на одном языке
+                else if (list1bool.Contains(true) && list2bool.Contains(true) || (list1bool.Contains(false) && list2bool.Contains(false)))
+                    return true;
+                else
+                    return false;
             }
         }
     }
