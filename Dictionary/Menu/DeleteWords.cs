@@ -5,17 +5,9 @@ namespace Dictionary.Menu
     {
         public void Execute()
         {
-            string outputString = null;
-            //Пользователь может удалять слова пока не введет exit или Enter
-            while (outputString != "exit" || outputString != "")
+            StopInput.Terms(delegate ()
             {
-                outputString = Console.ReadLine();
-                //Если пользователь ввел в консоль exit в любом регистре или нажал Enter - выйти из метода удаления
-                if (outputString.ToLower() == "exit" || outputString == "")
-                {
-                    return;
-                }
-                bool isNum = Int32.TryParse(outputString, out int deletedWordId);
+                bool isNum = Int32.TryParse(StopInput.InputString, out int deletedWordId);
                 //если пользователь ввел число, то попробовать удалить слово
                 if (isNum)
                 {
@@ -23,7 +15,7 @@ namespace Dictionary.Menu
                     {
                         var word = db.EngWords.Find(deletedWordId);
                         //word будет равен null, если нет слова с таким Id в бд
-                        if (!(word is null))
+                        if (!(word is null)) 
                         {
                             db.EngWords.Remove(word);
                             db.SaveChanges();
@@ -34,7 +26,7 @@ namespace Dictionary.Menu
                 }
                 else
                     Console.WriteLine("Введите число или Exit/Enter для выхода");
-            }
+            });
         }
     }
 }

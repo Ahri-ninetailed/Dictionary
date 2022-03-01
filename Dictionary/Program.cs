@@ -32,7 +32,7 @@ namespace Dictionary
                     new FifthCommand(),
                     new DeleteWords(),
                     new SeventhCommand(),
-                    new EigthCommand(),
+                    new FindWords(),
                     new NinthCommand(),
                 });
             MenuV01 menu = new MenuV01(showerMenu, chooseCommand);
