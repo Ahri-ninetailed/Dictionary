@@ -6,56 +6,6 @@ namespace Dictionary.Menu
 {
     class AddWords : ICommand
     {
-        //Проверка на английское слово или фразу, которая может содержать пробел
-        static bool IsEnglishWord(string word)
-        {
-            bool isEnglish = false;
-            for (int i = 0; i < word.Length; i++)
-            {
-                if (IsEnglishLetter(word[i]) || word[i] == ' ')
-                    isEnglish = true;
-                else
-                {
-                    isEnglish = false;
-                    break;
-                }
-            }
-            return isEnglish;
-            //Проверка на букву английского алфавита
-            static bool IsEnglishLetter(char letter)
-            {
-                int intLetter = (int)letter;
-                if ((letter >= 65 && letter <= 90) || (letter >= 97 && letter <= 122))
-                    return true;
-                else
-                    return false;
-            }
-        }
-        //Проверка на русское слово или фразу, которая может содержать пробел
-        static bool IsRussianWord(string word)
-        {
-            bool isRussian = false;
-            for (int i = 0; i < word.Length; i++)
-            {
-                if (IsRussianLetter(word[i]) || word[i] == ' ')
-                    isRussian = true;
-                else
-                {
-                    isRussian = false;
-                    break;
-                }
-            }
-            return isRussian;
-            //Проверка на букву русского алфавита
-            static bool IsRussianLetter(char letter)
-            {
-                int intLetter = (int)letter;
-                if ((letter >= 1040 && letter <= 1103) || letter == 1105 || letter == 1025)
-                    return true;
-                else
-                    return false;
-            }
-        }
         public void Execute()
         {
             StopInput.Terms(delegate ()
@@ -104,9 +54,9 @@ namespace Dictionary.Menu
                 {
                     //удалим начальные и конечные пробелы
                     unknownLang[i] = unknownLang[i].Trim();
-                    if (IsEnglishWord(unknownLang[i]))
+                    if (LanguageCheck.IsEnglishWord(unknownLang[i]))
                         engWords.Add(unknownLang[i]);
-                    else if (IsRussianWord(unknownLang[i]))
+                    else if (LanguageCheck.IsRussianWord(unknownLang[i]))
                         rusWords.Add(unknownLang[i]);
                     else throw new Exception("Неизвестный язык или некорректный ввод");
                 }
@@ -211,17 +161,17 @@ namespace Dictionary.Menu
                     //Добавим в бул списки true или false в зависимости от языка слов элементов list1 и list2
                     for (int i = 0; i < list1.Count; i++)
                     {
-                        if (IsRussianWord(list1[i]))
+                        if (LanguageCheck.IsRussianWord(list1[i]))
                             list1bool.Add(true);
-                        else if (IsEnglishWord(list1[i]))
+                        else if (LanguageCheck.IsEnglishWord(list1[i]))
                             list1bool.Add(false);
                         else throw new Exception("Неизвестный язык или некорректный ввод");
                     }
                     for (int i = 0; i < list2.Count; i++)
                     {
-                        if (IsRussianWord(list2[i]))
+                        if (LanguageCheck.IsRussianWord(list2[i]))
                             list2bool.Add(true);
-                        else if (IsEnglishWord(list2[i]))
+                        else if (LanguageCheck.IsEnglishWord(list2[i]))
                             list2bool.Add(false);
                         else throw new Exception("Неизвестный язык или некорректный ввод");
                     }
@@ -241,7 +191,6 @@ namespace Dictionary.Menu
                         return false;
                 }
             });
-           
         }
     }
 }
