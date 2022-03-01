@@ -10,7 +10,8 @@ namespace Dictionary.Menu
         {
             StopInput.Terms(delegate ()
             {
-                string userInput = StopInput.InputString;
+                //Слова в бд будут находиться в нижнем регистре
+                string userInput = StopInput.InputString.ToLower();
                 //Разделим строку на подстроки на основе тире
                 string[] splitOverTire = userInput.Split('-');
                 //В листы будут добавляться слова, которые пользователь хочет внести в словарь
@@ -76,7 +77,7 @@ namespace Dictionary.Menu
                         //Если слова есть в бд, то они добавляются в лист hasRusWords, если нет, то в лист newRusWords
                         if (db.RusWords.Any(w => w.Word == rusWords[i]))
                         {
-                            hasRusWords.Add(new RusWord { Word = rusWords[i] });
+                            hasRusWords.Add(db.RusWords.FirstOrDefault(w => w.Word == rusWords[i]));
                         }
                         else
                         {
@@ -89,7 +90,7 @@ namespace Dictionary.Menu
                         //Если слова есть в бд, то они добавляются в лист hasEngWords, если нет, то в лист newRusWords
                         if (db.EngWords.Any(w => w.Word == engWords[i]))
                         {
-                            hasEngWords.Add(new EngWord { Word = engWords[i] });
+                            hasEngWords.Add(db.EngWords.FirstOrDefault(w => w.Word == engWords[i]));
                         }
                         else
                         {
@@ -108,7 +109,7 @@ namespace Dictionary.Menu
                         }
                     }
                     //Если пользователь добавляет новый перевод английских слов к уже существующим русским словам
-                    else if (newEngWords.Count > 0)
+                    if (newEngWords.Count > 0)
                     {
                         for (int i = 0; i < newEngWords.Count; i++)
                         {
@@ -122,7 +123,7 @@ namespace Dictionary.Menu
                         }
                     }
                     //Если пользователь добавляет новый перевод русский слов к уже существующим английским словам
-                    else if (newRusWords.Count > 0)
+                    if (newRusWords.Count > 0)
                     {
                         for (int i = 0; i < newRusWords.Count; i++)
                         {
@@ -136,7 +137,7 @@ namespace Dictionary.Menu
                         }
                     }
                     //Если пользователь соотносит уже имеющиеся слова в базе данных
-                    else if (hasEngWords.Count > 0 && hasRusWords.Count > 0)
+                    if (hasEngWords.Count > 0 && hasRusWords.Count > 0)
                     {
                         for (int i = 0; i < hasEngWords.Count; i++)
                         {
