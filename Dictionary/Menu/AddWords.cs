@@ -50,7 +50,10 @@ namespace Dictionary.Menu
                 //Определим слова в подходящие по языку листы
                 //Но сначала узнаем разный ли язык слов из наборов unknownList1 и unknownList2
                 if (IsDifferentLanguages(unknownList1, unknownList2))
+                {
+                    Console.WriteLine("Неверный формат строки");
                     return;
+                }
                 for (int i = 0; i < unknownLang.Count; i++)
                 {
                     //удалим начальные и конечные пробелы

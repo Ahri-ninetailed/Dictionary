@@ -21,10 +21,6 @@ namespace Dictionary.Menu
     {
         public void Execute() => Console.WriteLine("SeventhCommand");
     }
-    class EigthCommand : ICommand
-    {
-        public void Execute() => Console.WriteLine("EigthCommand");
-    }
     class NinthCommand : ICommand
     {
         public void Execute() => Console.WriteLine("NinthCommand");
