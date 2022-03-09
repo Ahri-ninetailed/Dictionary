@@ -6,7 +6,6 @@ namespace Dictionary.Menu
     //в консоль выводится русский перевод английского слова в случайном порядке, слова которые уже выводились не должны заново выводиться
     //после нажатия клавиши ентер появляется английское слово
     //если пользователь введет в консоль Enter, то появиться следующий перевод. Если не ентер, то это слово добавиться в список не выученных слов
-
     class WordsCheck : ICommand
     {
         public void Execute()
@@ -32,9 +31,18 @@ namespace Dictionary.Menu
                     }
                     Console.WriteLine();
                     //после нажатия клавиши, выведем английское слово
-                    Console.ReadKey();
+                    Console.ReadKey(true);
                     Console.WriteLine(allEngWords[indexEngWord].Word);
-                    Console.WriteLine();
+                    string strOutput = Console.ReadLine();
+                    //Если пользователь введет не Enter, то добавим это слово в таблицу забытых слов
+                    if (strOutput != "")
+                    {
+                        //если в таблице забытых слов еще нет этого слова, то добавим его
+                        if (!db.ForgottenEngWords.Any(w => w.Word == allEngWords[indexEngWord].Word))
+                            db.ForgottenEngWords.Add(new ForgottenEngWord() { Word = allEngWords[indexEngWord].Word, OtherRusWords = allEngWords[indexEngWord].OtherWords.ToList() });
+                        db.SaveChanges();
+                        Console.WriteLine();
+                    }
                 }
             }
         }
