@@ -11,10 +11,11 @@ namespace Dictionary
     {
         public DbSet<RusWord> RusWords => Set<RusWord>();
         public DbSet<EngWord> EngWords => Set<EngWord>();
-        public ApplicationContext()
+        public DbSet<ForgottenEngWord> ForgottenEngWords => Set<ForgottenEngWord>();
+        public ApplicationContext() 
         {
             //Database.EnsureDeleted();
-           // Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

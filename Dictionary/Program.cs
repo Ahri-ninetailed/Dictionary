@@ -14,7 +14,7 @@ namespace Dictionary
                 {
                     "Слова",
                     "Добавить",
-                    "Проверка по английским словам",
+                    "Повторение слов",
                     "Проверка по русским словам",
                     "Проверка по всем словам",
                     "Удалить",
@@ -27,7 +27,7 @@ namespace Dictionary
                 {
                     new ShowWords(),
                     new AddWords(),
-                    new ThirdCommand(),
+                    new WordsCheck(),
                     new FourthCommand(),
                     new FifthCommand(),
                     new DeleteWords(),
