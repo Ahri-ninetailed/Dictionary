@@ -10,7 +10,6 @@ namespace Dictionary.Menu
     {
         public void Execute()
         {
-            Random random = new Random();
             using (ApplicationContext db = new ApplicationContext())
             {
                 //получим все английские слова
@@ -40,6 +39,11 @@ namespace Dictionary.Menu
                         //если в таблице забытых слов еще нет этого слова, то добавим его
                         if (!db.ForgottenEngWords.Any(w => w.Word == allEngWords[indexEngWord].Word))
                             db.ForgottenEngWords.Add(new ForgottenEngWord() { Word = allEngWords[indexEngWord].Word, OtherRusWords = allEngWords[indexEngWord].OtherWords.ToList() });
+                        else
+                        {
+                            //если в таблице забытых слов уже есть это слово, то обновим его счетчик
+                            db.ForgottenEngWords.FirstOrDefault(w => w.Word == allEngWords[indexEngWord].Word).CountOfRepetitions = 3;
+                        }
                         db.SaveChanges();
                         Console.WriteLine();
                     }
