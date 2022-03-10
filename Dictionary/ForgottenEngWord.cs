@@ -14,5 +14,6 @@ namespace Dictionary
         [Required]
         public string Word { get; set; }
         public List<RusWord> OtherRusWords { get; set; } = new List<RusWord>();
+        public int CountOfRepetitions { get; set; }
     }
 }
