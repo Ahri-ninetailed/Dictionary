@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Dictionary.Commands;
+using System;
 namespace Dictionary.Menu
 {
     class ChooseCommand : IChooseCommand
@@ -15,9 +16,14 @@ namespace Dictionary.Menu
             {
                 if (num == i + 1)
                 {
-                    Commands[i].Execute();
+                    if (Commands[i] is AddWords ||
+                        Commands[i] is DeleteWords ||
+                        Commands[i] is FindWords)
+                        StopInput.Terms(new Action(Commands[i].Execute));
+                    else
+                        Commands[i].Execute();
                 }
-            }            
+            }
         }
     }
     
