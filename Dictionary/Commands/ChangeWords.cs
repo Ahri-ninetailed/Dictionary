@@ -27,7 +27,13 @@ namespace Dictionary.Commands
                         new AddWords().Execute();
                         //если слово, добавилось, то удалим старое
                         if (countWords != db.EngWords.Count())
+                        {
                             db.EngWords.Remove(word);
+                            //также удалим слово из таблицы забытых слов
+                            var forgottenWord = db.ForgottenEngWords.FirstOrDefault(w => w.Word == word.Word);
+                            if (!(forgottenWord is null))
+                                db.ForgottenEngWords.Remove(forgottenWord);
+                        }
                         db.SaveChanges();
                     }
                     else
