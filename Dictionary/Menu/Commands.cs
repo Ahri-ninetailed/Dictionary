@@ -5,10 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 namespace Dictionary.Menu
 {
-    class FourthCommand : ICommand
-    {
-        public void Execute() => Console.WriteLine("FourthCommand");
-    }
     class FifthCommand : ICommand
     {
         public void Execute() => Console.WriteLine("FifthCommand");

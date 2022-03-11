@@ -14,5 +14,26 @@ namespace Dictionary
         [Required]
         public string Word { get; set; }
         public List<RusWord> OtherRusWords { get; set; } = new List<RusWord>();
+
+        int countOfRepetitions;
+        public int CountOfRepetitions
+        {
+            get
+            {
+                return countOfRepetitions;
+            }
+            set
+            {
+                countOfRepetitions = value;
+                if (countOfRepetitions == 0)
+                {
+                    using (ApplicationContext db = new ApplicationContext())
+                    {
+                        db.ForgottenEngWords.Remove(this);
+                        db.SaveChanges();
+                    }
+                }
+            }
+        }
     }
 }

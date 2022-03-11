@@ -157,6 +157,35 @@ namespace Dictionary.Menu
                         }
                     }
                     db.SaveChanges();
+
+                    //добавим/обновим новые или измененные слова в таблицу "забытых" слов
+                    List<ForgottenEngWord> forgottenEngWords = new List<ForgottenEngWord>();
+                    for (int i = 0; i < hasEngWords.Count; i++)
+                    {
+                        EngWord engWord = db.EngWords.Include(w => w.OtherWords).FirstOrDefault(w => w.Word == hasEngWords[i].Word);
+                        if (db.ForgottenEngWords.Any(w => w.Word == engWord.Word))
+                        {
+                            var word = db.ForgottenEngWords.Include(w => w.OtherRusWords).FirstOrDefault(w => w.Word == engWord.Word);
+                            word.OtherRusWords = engWord.OtherWords.ToList();
+                            word.CountOfRepetitions = 3;
+                        }
+                        else
+                            forgottenEngWords.Add(new ForgottenEngWord() { Word = engWord.Word, OtherRusWords = engWord.OtherWords.ToList(), CountOfRepetitions = 3 });
+                    }
+                    for (int i = 0; i < newEngWords.Count; i++)
+                    {
+                        EngWord engWord = db.EngWords.Include(w => w.OtherWords).FirstOrDefault(w => w.Word == newEngWords[i].Word);
+                        if (db.ForgottenEngWords.Any(w => w.Word == engWord.Word))
+                        {
+                            var word = db.ForgottenEngWords.Include(w => w.OtherRusWords).FirstOrDefault(w => w.Word == engWord.Word);
+                            word.OtherRusWords = engWord.OtherWords.ToList();
+                            word.CountOfRepetitions = 3;
+                        }
+                        else
+                            forgottenEngWords.Add(new ForgottenEngWord() { Word = engWord.Word, OtherRusWords = engWord.OtherWords.ToList(), CountOfRepetitions = 3 });
+                    }
+                    db.ForgottenEngWords.AddRange(forgottenEngWords);
+                    db.SaveChanges();
                 }
                 bool IsDifferentLanguages(List<string> list1, List<string> list2)
                 {

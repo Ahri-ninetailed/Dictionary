@@ -21,5 +21,10 @@ namespace Dictionary
         {
             optionsBuilder.UseSqlite("Data Source=Dictionary.db");
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ForgottenEngWord>().Property(u => u.CountOfRepetitions).HasDefaultValue(3);
+            modelBuilder.Entity<ForgottenEngWord>().HasCheckConstraint("CountOfRepetitions", "CountOfRepetitions >= 0 AND CountOfRepetitions <= 3");
+        }
     }
 }
