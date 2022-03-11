@@ -33,6 +33,9 @@ namespace Dictionary.Commands
                     Console.ReadKey(true);
                     Console.WriteLine(allForgottenWords[indexForgottenWord].Word);
                     string strOutput = Console.ReadLine();
+                    //если пользователь введет exit в любом регистре, то прекратится повторение слов
+                    if (strOutput.ToLower() == "exit")
+                        break;
                     //Если пользователь введет не Enter, то обновим счетчик у этого слова
                     if (strOutput != "")
                     {

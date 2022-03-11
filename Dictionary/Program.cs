@@ -28,7 +28,7 @@ namespace Dictionary
                 {
                     new ShowWords(),
                     new AddWords(),
-                    new WordsCheck(),
+                    new RepeatWords(),
                     new RepeatForgottenWords(),
                     new FifthCommand(),
                     new DeleteWords(),

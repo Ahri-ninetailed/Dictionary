@@ -6,7 +6,7 @@ namespace Dictionary.Commands
     //в консоль выводится русский перевод английского слова в случайном порядке, слова которые уже выводились не должны заново выводиться
     //после нажатия клавиши ентер появляется английское слово
     //если пользователь введет в консоль Enter, то появиться следующий перевод. Если не ентер, то это слово добавиться в список не выученных слов
-    class WordsCheck : ICommand
+    class RepeatWords : ICommand
     {
         public void Execute()
         {
@@ -33,6 +33,9 @@ namespace Dictionary.Commands
                     Console.ReadKey(true);
                     Console.WriteLine(allEngWords[indexEngWord].Word);
                     string strOutput = Console.ReadLine();
+                    //если пользователь введет exit в любом регистре, то завершится повторение слов
+                    if (strOutput.ToLower() == "exit")
+                        break;
                     //Если пользователь введет не Enter, то добавим это слово в таблицу забытых слов
                     if (strOutput != "")
                     {
