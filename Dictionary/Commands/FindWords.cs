@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-namespace Dictionary.Menu
+namespace Dictionary.Commands
 {
     class FindWords : ICommand
     {

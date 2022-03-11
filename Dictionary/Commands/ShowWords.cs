@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-namespace Dictionary.Menu
+namespace Dictionary.Commands
 {
     //Вывод имеющихся слов в бд
     class ShowWords : ICommand

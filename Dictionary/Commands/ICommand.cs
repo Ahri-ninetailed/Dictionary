@@ -1,4 +1,4 @@
-﻿namespace Dictionary.Menu
+﻿namespace Dictionary.Commands
 {
     interface ICommand
     {
