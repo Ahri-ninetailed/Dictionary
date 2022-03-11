@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Dictionary.Menu;
+using Dictionary.Commands;
 namespace Dictionary
 {
     class Program

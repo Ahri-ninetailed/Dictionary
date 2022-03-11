@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace Dictionary.Menu
+namespace Dictionary.Commands
 {
     //Класс содержит в себе метод, который выводит случайные числа без повторений от Min включая до Max не включая
     class ExclusiveRandomNumbers

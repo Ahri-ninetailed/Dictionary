@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dictionary.Menu
+namespace Dictionary.Commands
 {
     //Класс содержит методы, которые проверяют язык передаваемой строчки
     class LanguageCheck

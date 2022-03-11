@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-namespace Dictionary.Menu
+namespace Dictionary.Commands
 {
     //в консоль выводится русский перевод английского слова в случайном порядке, слова которые уже выводились не должны заново выводиться
     //после нажатия клавиши ентер появляется английское слово

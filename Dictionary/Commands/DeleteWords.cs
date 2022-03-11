@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Dictionary.Menu
+namespace Dictionary.Commands
 {
     class DeleteWords : ICommand
     {
