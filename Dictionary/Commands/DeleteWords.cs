@@ -1,32 +1,40 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 namespace Dictionary.Commands
 {
     class DeleteWords : ICommand
     {
         public void Execute()
         {
-            StopInput.Terms(delegate ()
+            string output = Console.ReadLine().ToLower();
+            StopInput.InputString = output;
+            if (output == "exit" || output == "")
+                return;
+            bool isNum = Int32.TryParse(output, out int deletedWordId);
+            //если пользователь ввел число, то попробовать удалить слово
+            if (isNum)
             {
-                bool isNum = Int32.TryParse(StopInput.InputString, out int deletedWordId);
-                //если пользователь ввел число, то попробовать удалить слово
-                if (isNum)
+                using (ApplicationContext db = new ApplicationContext())
                 {
-                    using (ApplicationContext db = new ApplicationContext())
+                    var word = db.EngWords.Find(deletedWordId);
+                    //word будет равен null, если нет слова с таким Id в бд
+                    if (!(word is null))
                     {
-                        var word = db.EngWords.Find(deletedWordId);
-                        //word будет равен null, если нет слова с таким Id в бд
-                        if (!(word is null)) 
-                        {
-                            db.EngWords.Remove(word);
-                            db.SaveChanges();
-                        }
-                        else
-                            Console.WriteLine("Не найдено слово с таким Id");
+                        db.EngWords.Remove(word);
+
+                        //также удалим слово из таблицы забытых слов
+                        var forgottenWord = db.ForgottenEngWords.FirstOrDefault(w => w.Word == word.Word);
+                        if (!(forgottenWord is null))
+                            db.ForgottenEngWords.Remove(forgottenWord);
+                        db.SaveChanges();
                     }
+                    else
+                        Console.WriteLine("Не найдено слово с таким Id");
                 }
-                else
-                    Console.WriteLine("Введите число или Exit/Enter для выхода");
-            });
+            }
+            else
+                Console.WriteLine("Введите число или Exit/Enter для выхода");
         }
     }
 }
