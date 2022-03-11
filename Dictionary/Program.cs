@@ -32,7 +32,7 @@ namespace Dictionary
                     new RepeatForgottenWords(),
                     new FifthCommand(),
                     new DeleteWords(),
-                    new SeventhCommand(),
+                    new ChangeWords(),
                     new FindWords(),
                     new NinthCommand(),
                 });
