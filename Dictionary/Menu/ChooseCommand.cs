@@ -18,7 +18,8 @@ namespace Dictionary.Menu
                 {
                     if (Commands[i] is AddWords ||
                         Commands[i] is DeleteWords ||
-                        Commands[i] is FindWords)
+                        Commands[i] is FindWords ||
+                        Commands[i] is ChangeWords)
                         StopInput.Terms(new Action(Commands[i].Execute));
                     else
                         Commands[i].Execute();

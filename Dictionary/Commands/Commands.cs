@@ -9,10 +9,6 @@ namespace Dictionary.Commands
     {
         public void Execute() => Console.WriteLine("FifthCommand");
     }
-    class SeventhCommand : ICommand
-    {
-        public void Execute() => Console.WriteLine("SeventhCommand");
-    }
     class NinthCommand : ICommand
     {
         public void Execute() => Console.WriteLine("NinthCommand");
