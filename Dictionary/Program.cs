@@ -17,11 +17,10 @@ namespace Dictionary
                     "Добавить",
                     "Повторение слов",
                     "Повторение забытых или новых слов",
-                    "Проверка по всем словам",
                     "Удалить",
                     "Изменить",
                     "Найти слово",
-                    "Выход",
+                    "Описание программы",
                 });
             ChooseCommand chooseCommand = new ChooseCommand(
                 new List<ICommand>
@@ -30,11 +29,10 @@ namespace Dictionary
                     new AddWords(),
                     new RepeatWords(),
                     new RepeatForgottenWords(),
-                    new FifthCommand(),
                     new DeleteWords(),
                     new ChangeWords(),
                     new FindWords(),
-                    new NinthCommand(),
+                    new Description(),
                 });
             MenuV01 menu = new MenuV01(showerMenu, chooseCommand);
             while (true)
