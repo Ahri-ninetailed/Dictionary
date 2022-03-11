@@ -19,18 +19,26 @@ namespace Dictionary.Commands
                 using (ApplicationContext db = new ApplicationContext())
                 {
                     var word = db.EngWords.Find(changedWordId);
+                    if (word != null)
+                        word = db.EngWords.Include(w => w.OtherWords).FirstOrDefault(w => w.Word == word.Word);
                     //word будет равен null, если нет слова с таким Id в бд
                     if (!(word is null))
                     {
                         int countWords = db.EngWords.Count();
+                        //удалим слово
+                        db.EngWords.Remove(word);
                         //добавим новое слово
                         new AddWords().Execute();
+                        db.SaveChanges();
                         //если слово, добавилось, то удалим старое
                         if (countWords != db.EngWords.Count())
                         {
-                            db.EngWords.Remove(word);
+                            db.EngWords.Add(new EngWord() { Word = word.Word, OtherWords = word.OtherWords });
+                        }
+                        else
+                        {
                             //также удалим слово из таблицы забытых слов
-                            var forgottenWord = db.ForgottenEngWords.FirstOrDefault(w => w.Word == word.Word);
+                            var forgottenWord = db.ForgottenEngWords.Include(w => w.OtherRusWords).FirstOrDefault(w => w.Word == word.Word);
                             if (!(forgottenWord is null))
                                 db.ForgottenEngWords.Remove(forgottenWord);
                         }
