@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 namespace Dictionary.Commands
 {
     class DeleteWords : ICommand
@@ -20,6 +22,11 @@ namespace Dictionary.Commands
                     if (!(word is null))
                     {
                         db.EngWords.Remove(word);
+
+                        //также удалим слово из таблицы забытых слов
+                        var forgottenWord = db.ForgottenEngWords.FirstOrDefault(w => w.Word == word.Word);
+                        if (!(forgottenWord is null))
+                            db.ForgottenEngWords.Remove(forgottenWord);
                         db.SaveChanges();
                     }
                     else
