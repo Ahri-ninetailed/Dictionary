@@ -8,8 +8,10 @@ namespace Dictionary.Commands
         public void Execute()
         {
 
-            string inputString = StopInput.InputString;
-            inputString = inputString.Trim().ToLower();
+            string inputString = Console.ReadLine().Trim().ToLower();
+            StopInput.InputString = inputString;
+            if (inputString == "exit" || inputString == "")
+                return;
             using (ApplicationContext db = new ApplicationContext())
             {
                 EngWord foundEngWord = db.EngWords.Include(w => w.OtherWords).FirstOrDefault(w => w.Word == inputString);

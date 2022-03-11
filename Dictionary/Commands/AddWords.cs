@@ -10,12 +10,15 @@ namespace Dictionary.Commands
         {
 
             //Слова в бд будут находиться в нижнем регистре
-            string userInput = StopInput.InputString.ToLower();
+            string userInput = Console.ReadLine().ToLower();
+            StopInput.InputString = userInput;
+            if (userInput == "exit" || userInput == "")
+                return;
             //Разделим строку на подстроки на основе тире
             string[] splitOverTire = userInput.Split('-');
             //В листы будут добавляться слова, которые пользователь хочет внести в словарь
             List<string> rusWords = new List<string>();
-            List<string> engWords = new List<string>();
+            List<string> engWords = new List<string>(); 
             //В этот лист будут добавлять все слова из консоли
             List<String> unknownLang = new List<string>();
             //В этим листы будут добавлять слова для проверки формата, формат строки должен иметь ввид "word,... - перевод,..." или "слово,... - translate,..."

@@ -5,7 +5,11 @@ namespace Dictionary.Commands
     {
         public void Execute()
         {
-            bool isNum = Int32.TryParse(StopInput.InputString, out int deletedWordId);
+            string output = Console.ReadLine().ToLower();
+            StopInput.InputString = output;
+            if (output == "exit" || output == "")
+                return;
+            bool isNum = Int32.TryParse(output, out int deletedWordId);
             //если пользователь ввел число, то попробовать удалить слово
             if (isNum)
             {
