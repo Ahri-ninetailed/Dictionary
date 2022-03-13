@@ -19,7 +19,8 @@ namespace Dictionary.Commands
                 using (ApplicationContext db = new ApplicationContext())
                 {
                     var word = db.EngWords.Find(changedWordId);
-                    word = db.EngWords.Include(w => w.OtherWords).FirstOrDefault(w => w.Word == word.Word);
+                    if (word != null)
+                        word = db.EngWords.Include(w => w.OtherWords).FirstOrDefault(w => w.Word == word.Word);
                     //word будет равен null, если нет слова с таким Id в бд
                     if (!(word is null))
                     {
