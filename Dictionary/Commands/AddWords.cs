@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 namespace Dictionary.Commands
 {
     class AddWords : ICommand
@@ -77,31 +78,40 @@ namespace Dictionary.Commands
                 List<EngWord> hasEngWords = new List<EngWord>();
 
                 //Определим русские слова из ввода пользователя по определенным листам
-                for (int i = 0; i < rusWords.Count; i++)
-                {
-                    //Если слова есть в бд, то они добавляются в лист hasRusWords, если нет, то в лист newRusWords
-                    if (db.RusWords.Any(w => w.Word == rusWords[i]))
+                Task task1 = Task.Run(() =>
+                { 
+                    for (int i = 0; i < rusWords.Count; i++)
                     {
-                        hasRusWords.Add(db.RusWords.FirstOrDefault(w => w.Word == rusWords[i]));
+                        //Если слова есть в бд, то они добавляются в лист hasRusWords, если нет, то в лист newRusWords
+                        if (db.RusWords.Any(w => w.Word == rusWords[i]))
+                        {
+                            hasRusWords.Add(db.RusWords.FirstOrDefault(w => w.Word == rusWords[i]));
+                        }
+                        else
+                        {
+                            newRusWords.Add(new RusWord { Word = rusWords[i] });
+                        }
                     }
-                    else
-                    {
-                        newRusWords.Add(new RusWord { Word = rusWords[i] });
-                    }
-                }
+                });
+
                 //Определим английские слова из ввода пользователя по определенным листам
-                for (int i = 0; i < engWords.Count; i++)
+                Task task2 = Task.Run(() =>
                 {
-                    //Если слова есть в бд, то они добавляются в лист hasEngWords, если нет, то в лист newRusWords
-                    if (db.EngWords.Any(w => w.Word == engWords[i]))
+                    for (int i = 0; i < engWords.Count; i++)
                     {
-                        hasEngWords.Add(db.EngWords.FirstOrDefault(w => w.Word == engWords[i]));
+                        //Если слова есть в бд, то они добавляются в лист hasEngWords, если нет, то в лист newRusWords
+                        if (db.EngWords.Any(w => w.Word == engWords[i]))
+                        {
+                            hasEngWords.Add(db.EngWords.FirstOrDefault(w => w.Word == engWords[i]));
+                        }
+                        else
+                        {
+                            newEngWords.Add(new EngWord { Word = engWords[i] });
+                        }
                     }
-                    else
-                    {
-                        newEngWords.Add(new EngWord { Word = engWords[i] });
-                    }
-                }
+                });
+                task1.Wait();
+                task2.Wait();
                 //Добавим новые слова в бд
                 db.RusWords.AddRange(newRusWords);
                 db.EngWords.AddRange(newEngWords);
@@ -197,22 +207,31 @@ namespace Dictionary.Commands
                 List<bool> list1bool = new List<bool>();
                 List<bool> list2bool = new List<bool>();
                 //Добавим в бул списки true или false в зависимости от языка слов элементов list1 и list2
-                for (int i = 0; i < list1.Count; i++)
+                Task task1 = Task.Run(() =>
                 {
-                    if (LanguageCheck.IsRussianWord(list1[i]))
-                        list1bool.Add(true);
-                    else if (LanguageCheck.IsEnglishWord(list1[i]))
-                        list1bool.Add(false);
-                    else throw new Exception("Неизвестный язык или некорректный ввод");
-                }
-                for (int i = 0; i < list2.Count; i++)
+                    for (int i = 0; i < list1.Count; i++)
+                    {
+                        if (LanguageCheck.IsRussianWord(list1[i]))
+                            list1bool.Add(true);
+                        else if (LanguageCheck.IsEnglishWord(list1[i]))
+                            list1bool.Add(false);
+                        else throw new Exception("Неизвестный язык или некорректный ввод");
+                    }
+                });
+                Task task2 = Task.Run(() =>
                 {
-                    if (LanguageCheck.IsRussianWord(list2[i]))
-                        list2bool.Add(true);
-                    else if (LanguageCheck.IsEnglishWord(list2[i]))
-                        list2bool.Add(false);
-                    else throw new Exception("Неизвестный язык или некорректный ввод");
-                }
+                    for (int i = 0; i < list2.Count; i++)
+                    {
+                        if (LanguageCheck.IsRussianWord(list2[i]))
+                            list2bool.Add(true);
+                        else if (LanguageCheck.IsEnglishWord(list2[i]))
+                            list2bool.Add(false);
+                        else throw new Exception("Неизвестный язык или некорректный ввод");
+                    }
+                });
+                task2.Wait();
+                task1.Wait();
+                
                 //Если в списках есть разные значения, то язык слов в этих списках разный
                 if (list1bool.Contains(true) && list1bool.Contains(false))
                 {

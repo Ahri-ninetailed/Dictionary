@@ -17,7 +17,7 @@ namespace Dictionary.Commands
                 string totalLengthString = "";
                 totalLengthString += $"{j + 1}. {words[j].Word} - ";
                 Console.Write($"{j + 1}. {words[j].Word} - ");
-                for (int i = 0; i < words[j].OtherWords.Count; i++)
+                Parallel.For(0, words[j].OtherWords.Count, (i) =>
                 {
                     if (i < words[j].OtherWords.Count - 1)
                     {
@@ -39,7 +39,8 @@ namespace Dictionary.Commands
                             Console.Write($" {words[j].Id}");
                         }
                     }
-                }
+                });
+
                 Console.WriteLine();
             }
 
