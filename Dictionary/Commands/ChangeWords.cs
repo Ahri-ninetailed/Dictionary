@@ -45,6 +45,9 @@ namespace Dictionary.Commands
                                 db.ForgottenEngWords.Remove(forgottenWord);
                         }
                         db.SaveChanges();
+
+                        //после изменения слов, запустим поток, который получает слова для вывода
+                        ApplicationContext.GetEngWordsTask = ApplicationContext.GetEngWordsAsync();
                     }
                     else
                         Console.WriteLine("Не найдено слово с таким Id");
