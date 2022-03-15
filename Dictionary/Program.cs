@@ -4,24 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Dictionary.Menu;
 using Dictionary.Commands;
+using System.Threading.Tasks;
 namespace Dictionary
 {
     class Program
     {
         static void Main(string[] args)
         {
-            ShowerMenu showerMenu = new ShowerMenu(
-                new List<string>
-                {
-                    "Слова",
-                    "Добавить",
-                    "Повторение слов",
-                    "Повторение забытых или новых слов",
-                    "Удалить",
-                    "Изменить",
-                    "Найти слово",
-                    "Описание программы",
-                });
+            //При первом запуске программы обновим и запустим поток
+            ApplicationContext.GetEngWordsTask = ApplicationContext.GetEngWordsAsync();
             ChooseCommand chooseCommand = new ChooseCommand(
                 new List<ICommand>
                 {
@@ -33,6 +24,18 @@ namespace Dictionary
                     new ChangeWords(),
                     new FindWords(),
                     new Description(),
+                });
+            ShowerMenu showerMenu = new ShowerMenu(
+                new List<string>
+                {
+                    "Слова",
+                    "Добавить",
+                    "Повторение слов",
+                    "Повторение забытых или новых слов",
+                    "Удалить",
+                    "Изменить",
+                    "Найти слово",
+                    "Описание программы",
                 });
             MenuV01 menu = new MenuV01(showerMenu, chooseCommand);
             while (true)

@@ -18,9 +18,11 @@ namespace Dictionary.Commands
             {
                 using (ApplicationContext db = new ApplicationContext())
                 {
+                    //найдем слово по id
                     var word = db.EngWords.Find(changedWordId);
+                    //если нашлось, то подгрузим перевод этого слова
                     if (word != null)
-                        word = db.EngWords.Include(w => w.OtherWords).FirstOrDefault(w => w.Word == word.Word);
+                        word = db.EngWords.Where(w => w.Id == word.Id).Include(w => w.OtherWords).FirstOrDefault(w => w.Word == word.Word);
                     //word будет равен null, если нет слова с таким Id в бд
                     if (!(word is null))
                     {
@@ -43,6 +45,9 @@ namespace Dictionary.Commands
                                 db.ForgottenEngWords.Remove(forgottenWord);
                         }
                         db.SaveChanges();
+
+                        //после изменения слов, запустим поток, который получает слова для вывода
+                        ApplicationContext.GetEngWordsTask = ApplicationContext.GetEngWordsAsync();
                     }
                     else
                         Console.WriteLine("Не найдено слово с таким Id");

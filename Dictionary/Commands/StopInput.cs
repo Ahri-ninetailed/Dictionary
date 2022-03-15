@@ -13,7 +13,7 @@ namespace Dictionary.Commands
         {
             InputString = null;
             //Пользователь может может взаимодействовать с консолью пока не введет exit или Enter
-            while (InputString != "exit" || InputString != "")
+            while (true)
             {
                 //Если пользователь ввел в консоль exit в любом регистре или нажал Enter - выйти из метода удаления
                 if (InputString?.ToLower() == "exit" || InputString == "")
