@@ -14,8 +14,8 @@ namespace Dictionary.Commands
                 return;
             using (ApplicationContext db = new ApplicationContext())
             {
-                EngWord foundEngWord = db.EngWords.Include(w => w.OtherWords).FirstOrDefault(w => w.Word == inputString);
-                RusWord foundRusWord = db.RusWords.Include(w => w.OtherWords).FirstOrDefault(w => w.Word == inputString);
+                EngWord foundEngWord = db.EngWords.Where(w => w.Word == inputString).Include(w => w.OtherWords).FirstOrDefault(w => w.Word == inputString);
+                RusWord foundRusWord = db.RusWords.Where(w => w.Word == inputString).Include(w => w.OtherWords).FirstOrDefault(w => w.Word == inputString);
                 if (!(foundEngWord is null))
                 {
                     Console.Write($"{foundEngWord.Word} - ");
