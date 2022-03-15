@@ -28,6 +28,9 @@ namespace Dictionary.Commands
                         if (!(forgottenWord is null))
                             db.ForgottenEngWords.Remove(forgottenWord);
                         db.SaveChanges();
+
+                        //после удаления слов, запустим поток, который получает слова для вывода
+                        ApplicationContext.GetEngWordsTask = ApplicationContext.GetEngWordsAsync();
                     }
                     else
                         Console.WriteLine("Не найдено слово с таким Id");

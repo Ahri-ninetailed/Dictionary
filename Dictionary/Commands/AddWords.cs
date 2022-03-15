@@ -188,6 +188,9 @@ namespace Dictionary.Commands
                 }
                 db.ForgottenEngWords.AddRange(forgottenEngWords);
                 db.SaveChanges();
+
+                //после добавления или обновления слов, запустим поток, который получает слова для вывода
+                ApplicationContext.GetEngWordsTask = ApplicationContext.GetEngWordsAsync();
             }
             bool IsDifferentLanguages(List<string> list1, List<string> list2)
             {
