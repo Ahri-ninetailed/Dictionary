@@ -78,40 +78,34 @@ namespace Dictionary.Commands
                 List<EngWord> hasEngWords = new List<EngWord>();
 
                 //Определим русские слова из ввода пользователя по определенным листам
-                Task task1 = Task.Run(() =>
-                { 
-                    for (int i = 0; i < rusWords.Count; i++)
+                for (int i = 0; i < rusWords.Count; i++)
+                {
+                    //Если слова есть в бд, то они добавляются в лист hasRusWords, если нет, то в лист newRusWords
+                    if (db.RusWords.Any(w => w.Word == rusWords[i]))
                     {
-                        //Если слова есть в бд, то они добавляются в лист hasRusWords, если нет, то в лист newRusWords
-                        if (db.RusWords.Any(w => w.Word == rusWords[i]))
-                        {
-                            hasRusWords.Add(db.RusWords.FirstOrDefault(w => w.Word == rusWords[i]));
-                        }
-                        else
-                        {
-                            newRusWords.Add(new RusWord { Word = rusWords[i] });
-                        }
+                        hasRusWords.Add(db.RusWords.FirstOrDefault(w => w.Word == rusWords[i]));
                     }
-                });
+                    else
+                    {
+                        newRusWords.Add(new RusWord { Word = rusWords[i] });
+                    }
+                }
 
                 //Определим английские слова из ввода пользователя по определенным листам
-                Task task2 = Task.Run(() =>
+                for (int i = 0; i < engWords.Count; i++)
                 {
-                    for (int i = 0; i < engWords.Count; i++)
+                    //Если слова есть в бд, то они добавляются в лист hasEngWords, если нет, то в лист newRusWords
+                    if (db.EngWords.Any(w => w.Word == engWords[i]))
                     {
-                        //Если слова есть в бд, то они добавляются в лист hasEngWords, если нет, то в лист newRusWords
-                        if (db.EngWords.Any(w => w.Word == engWords[i]))
-                        {
-                            hasEngWords.Add(db.EngWords.FirstOrDefault(w => w.Word == engWords[i]));
-                        }
-                        else
-                        {
-                            newEngWords.Add(new EngWord { Word = engWords[i] });
-                        }
+                        hasEngWords.Add(db.EngWords.FirstOrDefault(w => w.Word == engWords[i]));
                     }
-                });
-                task1.Wait();
-                task2.Wait();
+                    else
+                    {
+                        newEngWords.Add(new EngWord { Word = engWords[i] });
+                    }
+                }
+
+
                 //Добавим новые слова в бд
                 db.RusWords.AddRange(newRusWords);
                 db.EngWords.AddRange(newEngWords);
@@ -204,6 +198,9 @@ namespace Dictionary.Commands
             }
             bool IsDifferentLanguages(List<string> list1, List<string> list2)
             {
+                if (list1.Count == 0 || list2.Count == 0)
+                    return true;
+
                 List<bool> list1bool = new List<bool>();
                 List<bool> list2bool = new List<bool>();
                 //Добавим в бул списки true или false в зависимости от языка слов элементов list1 и list2
