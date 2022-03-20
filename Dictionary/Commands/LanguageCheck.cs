@@ -15,7 +15,7 @@ namespace Dictionary.Commands
             bool isEnglish = false;
             for (int i = 0; i < word.Length; i++)
             {
-                if (IsEnglishLetter(word[i]) || word[i] == ' ')
+                if (IsEnglishLetter(word[i]) || word[i] == ' ' || word[i] == '\'')
                     isEnglish = true;
                 else
                 {
@@ -40,7 +40,7 @@ namespace Dictionary.Commands
             bool isRussian = false;
             for (int i = 0; i < word.Length; i++)
             {
-                if (IsRussianLetter(word[i]) || word[i] == ' ')
+                if (IsRussianLetter(word[i]) || word[i] == ' ' || word[i] == '\'')
                     isRussian = true;
                 else
                 {
