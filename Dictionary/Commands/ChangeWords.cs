@@ -16,23 +16,36 @@ namespace Dictionary.Commands
             //если пользователь ввел число, то попробовать удалить слово
             if (isNum)
             {
+                //Этой переменной будет присваиваться слово, которое мы найдем по Id
+                EngWord word;
                 using (ApplicationContext db = new ApplicationContext())
                 {
                     //найдем слово по id
-                    var word = db.EngWords.Find(changedWordId);
+                    word = db.EngWords.Find(changedWordId);
+                }
+                if (word is null)
+                    Console.WriteLine("Не найдено слово с таким Id");
+                else
+                {
+                    //В эту переменную будем записывать количество английских слов
+                    int countWords;
+
                     //если нашлось, то подгрузим перевод этого слова
-                    if (word != null)
-                        word = db.EngWords.Where(w => w.Id == word.Id).Include(w => w.OtherWords).FirstOrDefault(w => w.Word == word.Word);
-                    //word будет равен null, если нет слова с таким Id в бд
-                    if (!(word is null))
+                    using (ApplicationContext db = new ApplicationContext())
                     {
-                        int countWords = db.EngWords.Count();
+                        word = db.EngWords.Where(w => w.Id == word.Id).Include(w => w.OtherWords).FirstOrDefault(w => w.Word == word.Word);
+
+                        countWords = db.EngWords.Count();
                         //удалим слово
                         db.EngWords.Remove(word);
-                        //добавим новое слово
-                        new AddWords().Execute();
                         db.SaveChanges();
-                        //если слово, добавилось, то удалим старое
+                    }
+                   
+                    //добавим новое слово
+                    new AddWords().Execute();
+                    using (ApplicationContext db = new ApplicationContext())
+                    {
+                        //если слово, не добавилось, то добавим заново удаленное слово
                         if (countWords != db.EngWords.Count())
                         {
                             db.EngWords.Add(new EngWord() { Word = word.Word, OtherWords = word.OtherWords });
@@ -45,12 +58,10 @@ namespace Dictionary.Commands
                                 db.ForgottenEngWords.Remove(forgottenWord);
                         }
                         db.SaveChanges();
-
-                        //после изменения слов, запустим поток, который получает слова для вывода
-                        ApplicationContext.GetEngWordsTask = ApplicationContext.GetEngWordsAsync();
                     }
-                    else
-                        Console.WriteLine("Не найдено слово с таким Id");
+                    
+                    //после изменения слов, запустим поток, который получает слова для вывода
+                    ApplicationContext.GetEngWordsTask = ApplicationContext.GetEngWordsAsync();
                 }
             }
             else
