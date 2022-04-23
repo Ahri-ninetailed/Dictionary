@@ -32,7 +32,7 @@ namespace Dictionary.Commands
                 {
                     for (int i = 0; i < foundRusWord.OtherWords.Count; i++)
                     {
-                        EngWord engWord = db.EngWords.Include(w => w.OtherWords).FirstOrDefault(w => w.Word == foundRusWord.OtherWords[i].Word);
+                        EngWord engWord = db.EngWords.Where(w => w.Word == foundRusWord.OtherWords[i].Word).Include(w => w.OtherWords).FirstOrDefault(w => w.Word == foundRusWord.OtherWords[i].Word);
                         Console.Write($"{engWord.Word} - ");
                         for (int j = 0; j < engWord.OtherWords.Count; j++)
                         {
