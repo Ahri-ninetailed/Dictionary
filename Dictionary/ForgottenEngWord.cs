@@ -25,14 +25,6 @@ namespace Dictionary
             set
             {
                 countOfRepetitions = value;
-                if (countOfRepetitions == 0)
-                {
-                    using (ApplicationContext db = new ApplicationContext())
-                    {
-                        db.ForgottenEngWords.Remove(this);
-                        db.SaveChanges();
-                    }
-                }
             }
         }
     }
