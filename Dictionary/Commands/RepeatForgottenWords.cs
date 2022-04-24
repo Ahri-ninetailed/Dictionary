@@ -14,6 +14,10 @@ namespace Dictionary.Commands
             {
                 //получим все забытые слова
                 var allForgottenWords = db.ForgottenEngWords.Include(w => w.OtherRusWords).ToList();
+
+                //выведем количество забытых слов в консоль
+                Console.WriteLine(allForgottenWords.Count);
+
                 //создадим объект класса, который генерируют уникальные случайные числа
                 ExclusiveRandomNumbers exclusiveRandomNumbers = new ExclusiveRandomNumbers(0, allForgottenWords.Count);
                 for (int i = 0; i < allForgottenWords.Count; i++)
@@ -31,7 +35,8 @@ namespace Dictionary.Commands
                     Console.WriteLine();
                     //после нажатия клавиши, выведем английское слово
                     Console.ReadKey(true);
-                    Console.WriteLine(allForgottenWords[indexForgottenWord].Word);
+                    //после 40 символа в строку добавится количество повторений забытого слова
+                    Console.WriteLine($"{allForgottenWords[indexForgottenWord].Word.PadRight(40)}{allForgottenWords[indexForgottenWord].CountOfRepetitions}");
                     string strOutput = Console.ReadLine();
                     //если пользователь введет exit в любом регистре, то прекратится повторение слов
                     if (strOutput.ToLower() == "exit")
