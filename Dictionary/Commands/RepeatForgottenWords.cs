@@ -49,13 +49,12 @@ namespace Dictionary.Commands
                     else
                     {
                         allForgottenWords[indexForgottenWord].CountOfRepetitions -= 1;
+                        if (allForgottenWords[indexForgottenWord].CountOfRepetitions == 0)
+                            db.ForgottenEngWords.Remove(allForgottenWords[indexForgottenWord]);
+
                     }
                     Console.WriteLine();
-                    try
-                    {
-                        db.SaveChanges();
-                    }
-                    catch { }
+                    db.SaveChanges();
                 }
             }
         }
